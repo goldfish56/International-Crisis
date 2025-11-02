@@ -1,0 +1,24 @@
+namespace = is_territory
+
+is_territory.1 = {
+    type = country_event
+    placement = root
+	title = is_territory.1.t
+	desc = is_territory.1.d
+	flavor = is_territory.1.f
+
+    duration = 3
+	immediate = {
+		
+	}
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+    option = {
+		name = is_taerritory.1.o
+		add_journal_entry = {
+			type = {type = je_international_crisis_territory}
+		}
+    }
+}
