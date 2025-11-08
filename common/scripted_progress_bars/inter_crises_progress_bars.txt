@@ -1,17 +1,12 @@
 terri_crisis_composition_progress_bar = {
 	name = "terri_crisis_composition_progress_bar"
 	desc = "terri_crisis_composition_progress_bar_desc"
-    start_value = 0
+    start_value = 100
     min_value = 0
-    max_value = 100
+    max_value = 200
     weekly_progress = {
         
     }
-}
-terri_crisis_peril_progress_bar = {
-	name = "terri_crisis_peril_progress_bar"
-	desc = "terri_crisis_peril_progress_bar_desc"
-    start_value = 0
-    min_value = 0
-    max_value = 100
+    double_sided_bad = yes
+    
 }

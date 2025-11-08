@@ -2,10 +2,35 @@ je_international_crisis_territory = {
 
 	group = je_group_crises
 
+	scripted_button = terri_crisis_button.1
 	scripted_progress_bar = terri_crisis_composition_progress_bar
-	scripted_progress_bar = terri_crisis_peril_progress_bar
 
-	#scripted_button = terri_crisis_button
+	immediate = {
+		random_country = {
+			limit = {
+				NOT = { THIS = ROOT }
+				is_country_type = recognized
+				aggressive_diplomatic_plays_permitted = yes
+				is_subject = no
+				
+				any_neighbouring_state = {
+					count >= 1
+					has_claim_by = root
+				}
+			}
+			save_scope_as = scope:opposite_nation
+		}
+	}
+
+	possible = {
+		
+	}
 
 	
+
+    progressbar = yes
+    transferable = no
+    can_deactivate = no
+    can_revolution_inherit = yes
+    should_be_pinned_by_default = yes
 }

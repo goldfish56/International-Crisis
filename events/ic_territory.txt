@@ -6,6 +6,28 @@ ic_territory.1 = {
 	title = ic_territory.1.t
 	desc = ic_territory.1.d
 	flavor = ic_territory.1.f
+	trigger = {
+		is_subject = no
+		
+		aggressive_diplomatic_plays_permitted = yes
+
+		any_country = {
+			count = 1
+			NOT = { THIS = ROOT }
+			is_country_type = recognized
+			aggressive_diplomatic_plays_permitted = yes
+			is_subject = no
+			
+			any_neighbouring_state = {
+				count >= 1
+				has_claim_by = root
+			}
+			
+		}
+		NOT = {
+			has_variable = crisis_cooldown
+		}
+	}
 
     duration = 3
 	immediate = {
@@ -16,9 +38,27 @@ ic_territory.1 = {
 	}
 
     option = {
-		name = ic_taerritory.1.o
-		add_journal_entry = {
-			type = je_international_crisis_territory
+		ai_chance = {value = 100}
+		name = ic_territory.1.o
+		every_country = {
+			add_journal_entry = {
+				type = je_international_crisis_territory
+			}
+			set_variable = {name = crisis_cooldown}
 		}
     }
+}
+ic_territory.2 = {
+    type = country_event
+    placement = root
+	title = ic_territory.2.t
+	desc = ic_territory.2.d
+	flavor = ic_territory.2.f
+    duration = 3
+	immediate = {
+		
+	}
+	event_image = {
+		video = "africa_diplomats_negotiating"
+	}
 }

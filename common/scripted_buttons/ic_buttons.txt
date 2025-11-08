@@ -1,0 +1,18 @@
+terri_crisis_button.1 = {
+	desc = terri_crisis_button.1.desc
+	name = terri_crisis_button.1.name
+	possible = {
+		NOT = {
+			has_variable = terri_crisis_cooldown
+		}
+	}
+	ai_chance = {
+		value = 80
+
+	}
+    effect = {
+		set_variable = {name = terri_crisis_cooldown years = 1}
+		trigger_event = { id = ic_territory.2}
+	}
+
+}
