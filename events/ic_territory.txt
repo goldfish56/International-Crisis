@@ -1,5 +1,6 @@
 namespace = ic_territory
 
+#event for refuged
 ic_territory.1 = {
     type = country_event
     placement = root
@@ -8,14 +9,8 @@ ic_territory.1 = {
 	flavor = ic_territory.1.f
 	
 	trigger = {
-		
-
-
-		
-
+		always = yes
 	}
-
-	
 
     duration = 3
 
@@ -34,16 +29,6 @@ ic_territory.1 = {
 
 		ai_chance = {
 			base = 100
-		# 	if = {
-		# 		# limit = {
-		# 		# 	#higher dignity? --> -10(max)
-		# 		# }
-		# 	}
-		# 	if = {
-		# # 		limit = {
-		# # #			lower dignity? --> 10(max)
-		# # 		}
-		# 	}
 		}
 
 
@@ -51,32 +36,9 @@ ic_territory.1 = {
 	
 
 	after = {
-
-
-		every_country = {
-			limit = {
-				this = scope:crisis_opposite
-			}
-			set_global_variable = {
-				name = crisis_opposite
-				value = scope:crisis_opposite
-			}
-			add_journal_entry = {
-				type = je_international_crisis_territory
-			}
-		}
-		every_country = {
-			limit = {
-				this = scope:crisis_target
-			}
-			set_global_variable = {
-				name = crisis_target
-				value = scope:crisis_target
-			}
-			add_journal_entry = {
-				type = je_international_crisis_territory
-			}
-		}
+		add_journal_entry = {
+			type = je_international_crisis_territory
+		}	
 	}
 }
 
@@ -92,14 +54,32 @@ ic_territory.2 = {
 		
 	}
 	event_image = {
-		video = "africa_diplomats_negotiating"
+		video = "europenorthamerica_springtime_of_nations"
+	}
+	option = {
+		add_journal_entry = {
+			type = je_international_crisis_territory
+		}	
+		ai_chance = {
+			base = 100 #모딩 필요
+		}
+		every_country = {
+			limit = {
+				this = global_var:crisis_target
+			}
+			trigger_event = ic_territory.1
+		}
+		
 	}
 	option = {
 		
 	}
+	after = {
+
+	}
 }
 
-#event for target
+#event for agreed
 ic_territory.3 = {
     type = country_event
     placement = root
@@ -114,6 +94,7 @@ ic_territory.3 = {
 		video = "africa_diplomats_negotiating"
 	}
 	option = {
-		
+		annex = scope:terri_crisis_land
 	}
+
 }

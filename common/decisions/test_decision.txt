@@ -48,15 +48,35 @@ test_decision = {
 				}
 				any_neighbouring_state = {
 					has_claim_by = root
+					owner = root
 					
 				}
 			}
 			save_scope_as = crisis_opposite
-			trigger_event = ic_territory.1
+			trigger_event = ic_territory.2
+			set_global_variable = {
+				name = crisis_opposite
+				value = scope:crisis_opposite
+			}
 		}
 		this = {
-			trigger_event = ic_territory.1
+		
 			save_scope_as = crisis_target
+			set_global_variable = {
+				name = crisis_target
+				value = scope:crisis_target
+			}
+		}
+		every_neighbouring_state = {
+			limit = {
+				has_claim_by = scope:crisis_target
+				owner = scope:crisis_opposite
+			}
+			set_global_variable = {
+				name = terri_crisis_land
+				value = this
+			}
+			save_scope_as = terri_crisis_land
 		}
 
 	}
@@ -66,65 +86,4 @@ test_decision = {
 	}
 }
 
-test_decision.2 = {
-	is_shown = {
-		always = yes
-	}
 
-	possible = {
-
-			is_subject = no
-			
-			aggressive_diplomatic_plays_permitted = yes
-			any_neighbouring_state = {
-				has_claim_by = root
-
-				count >= 1
-				any_country = {
-					count >= 1
-					#is_country_type = recognized
-					aggressive_diplomatic_plays_permitted = yes
-					is_subject = no
-				
-					NOR = {
-						has_variable = crisis_cooldown
-						is_country_type = decentralized
-						THIS = ROOT
-					}
-				}
-			}
-			NOR = {
-				has_variable = crisis_cooldown
-				is_country_type = decentralized
-			}
-
-	}
-
-	when_taken = {
-			every_neighbouring_state = {
-				limit = {
-					has_claim_by = root
-
-
-					any_country = {
-
-						#is_country_type = recognized
-						aggressive_diplomatic_plays_permitted = yes
-						is_subject = no
-					
-						NOR = {
-							has_variable = crisis_cooldown
-							is_country_type = decentralized
-							THIS = ROOT
-						}
-						set_variable = {name = ic_opposite_nation}
-					}
-				}
-				
-			}
-	}
-
-	ai_chance = {
-		value = 10
-	}
-}
