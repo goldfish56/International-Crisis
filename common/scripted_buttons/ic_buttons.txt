@@ -3,16 +3,35 @@ terri_crisis_button.1 = {
 	name = terri_crisis_button.1.name
 	possible = {
 		NOT = {
+			
 			has_variable = terri_crisis_cooldown
 		}
+		hidden_trigger = {
+			has_variable = ic_opposite_nation
+			has_variable = ic_target_nation
+		}
+		#custom_description = {
+		#the nation should be opposite or target
+		#}
 	}
 	ai_chance = {
-		value = 80
+		value = 100
 
 	}
     effect = {
 		set_variable = {name = terri_crisis_cooldown years = 1}
-		trigger_event = { id = ic_territory.2}
+		if = {
+			limit = {
+				this = scope:ic_opposite_nation
+			}
+			trigger_event = { id = ic_territory.2}
+		}
+		if = {
+			limit = {
+				this = scope:ic_target_nation
+			}
+			trigger_event = {id = ic_territory.3}
+		}
 	}
 
 }

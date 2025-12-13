@@ -6,20 +6,101 @@ je_international_crisis_territory = {
 	scripted_progress_bar = terri_crisis_composition_progress_bar
 
 	immediate = {
-		random_country = {
-			limit = {
-				NOT = { THIS = ROOT }
-				is_country_type = recognized
-				aggressive_diplomatic_plays_permitted = yes
-				is_subject = no
-				
-				any_neighbouring_state = {
-					count >= 1
-					has_claim_by = root
-				}
-			}
-			save_scope_as = scope:opposite_nation
-		}
+        every_country = {
+            limit = {
+                this = global_var:crisis_opposite
+            }
+            save_scope_as = crisis_opposite
+        }
+        every_country = {
+            limit = {
+                this = global_var:crisis_target
+            }
+            save_scope_as = crisis_target
+        }
+            
+        
+        create_com_situation = {
+            situation_id = je_com_international_crisis_territory
+            icon = com_icon_rise_of_communism
+
+            side_leader_country_left = scope:crisis_opposite
+            side_name_left = je_com_international_crisis_territory_left
+            side_desc_left = je_com_international_crisis_territory_left_desc
+
+            side_leader_country_right = scope:crisis_target
+            side_name_right = je_com_international_crisis_territory_right
+            side_desc_right = je_com_international_crisis_territory_sright_desc
+        }
+
+        set_com_situation_header = {
+            text = je_com_international_crisis_territory_header
+        }
+
+        # Create Hardliners faction
+        create_com_situation_faction = {
+            side = left
+            name = je_com_international_crisis_territory_hardliners
+            desc = je_com_international_crisis_territory_desc
+        }
+        add_com_situation_faction_country = {
+            side = left
+            name = je_com_international_crisis_territory_hardliners
+            country = c:CHI
+        }
+
+
+        # Create Fascist faction
+        create_com_situation_faction = {
+            side = right
+            name = je_com_international_crisis_territory_fascists
+            desc = je_com_international_crisis_territory_fascists_desc
+        }
+        add_com_situation_faction_country = {
+            side = right
+            name = je_com_international_crisis_territory_fascists
+            country = c:SWI
+        }
+		
+        # Create Bystanders faction
+        create_com_situation_faction = {
+            side = neutral
+            name = je_com_rise_of_communism_faction_bystanders
+            desc = je_com_rise_of_communism_faction_bystanders_desc
+        }
+        add_com_situation_faction_country = {
+            side = neutral
+            name = je_com_rise_of_communism_faction_bystanders
+            country = c:PRU
+        }
+
+		
+        # Create Main Actions button group
+        create_com_situation_button_group = {
+            name = je_com_rise_of_communism_button_group_main_actions
+            desc = je_com_rise_of_communism_button_group_main_actions_desc
+            scripted_button = terri_crisis_button
+        }
+        add_com_situation_button_group_element = {
+            group = je_com_rise_of_communism_button_group_main_actions
+            name = sb_com_rise_of_communism_test
+        }
+
+        # Create Diplomatic Actions button group
+        create_com_situation_button_group = {
+            name = je_com_rise_of_communism_button_group_diplomatic_actions
+            desc = je_com_rise_of_communism_button_group_diplomatic_actions_desc
+            
+        }
+        add_com_situation_button_group_element = {
+            group = je_com_rise_of_communism_button_group_diplomatic_actions
+            name = sb_com_rise_of_communism_test2
+        }
+        add_com_situation_button_group_element = {
+            group = je_com_rise_of_communism_button_group_diplomatic_actions
+            name = sb_com_rise_of_communism_test3
+        }
+
 	}
 
 	possible = {
@@ -28,7 +109,9 @@ je_international_crisis_territory = {
 
 	
 
-    progressbar = yes
+	
+
+    progressbar = no
     transferable = no
     can_deactivate = no
     can_revolution_inherit = yes
