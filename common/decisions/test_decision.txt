@@ -8,21 +8,38 @@ test_decision = {
 			
 			aggressive_diplomatic_plays_permitted = yes
 			any_country = {
-						#is_country_type = recognized
-						
+				#is_country_type = recognized
+				
+				NOT = {
+					exists = scope:crisis_temp
+				}
+				NOR = {
+					is_subject = yes
 					
-						NOR = {
-							is_subject = yes
-							
-							is_country_type = decentralized
-							THIS = ROOT
-						}
-						any_neighbouring_state = {
-							
+					is_country_type = decentralized
+					THIS = ROOT
+				}
+				any_neighbouring_state = {
+					
+					owner = root
+					has_claim_by = root
+				}
+				save_temporary_scope_as = crisis_temp
+			}
+			any_country = {
+				exists = scope:crisis_temp
+				NOR = {
+					is_subject = yes
+					
+					is_country_type = decentralized
+					THIS = ROOT
+				}
+				any_neighbouring_state = {
 						
-							has_claim_by = root
-						}
-						save_temporary_scope_as = crisis_temp
+					owner = root
+					has_claim_by = root
+				}
+				save_temporary_scope_as = crisis_temp
 			}
 			any_neighbouring_state = {
 				count >= 1
@@ -52,37 +69,58 @@ test_decision = {
 					
 				}
 			}
-			save_scope_as = crisis_opposite
+			save_scope_as = terri_crisis_opposite
 			trigger_event = ic_territory.2
 			set_global_variable = {
-				name = crisis_opposite
-				value = scope:crisis_opposite
+				name = terri_crisis_opposite
+				value = scope:terri_crisis_opposite
 			}
 		}
 		this = {
 		
-			save_scope_as = crisis_target
+			save_scope_as = terri_crisis_target
 			set_global_variable = {
-				name = crisis_target
-				value = scope:crisis_target
+				name = terri_crisis_target
+				value = scope:terri_crisis_target
 			}
 		}
 		every_neighbouring_state = {
 			limit = {
-				has_claim_by = scope:crisis_target
-				owner = scope:crisis_opposite
+				has_claim_by = scope:terri_crisis_target
+				owner = scope:terri_crisis_opposite
 			}
+			save_scope_as = terri_crisis_land
 			set_global_variable = {
 				name = terri_crisis_land
 				value = this
 			}
-			save_scope_as = terri_crisis_land
+			
+			
 		}
 
 	}
 
 	ai_chance = {
 		value = 0
+	}
+}
+test_decison.2 = {
+	is_shown = {
+		always = yes
+	}
+	possible = {
+	}
+	when_taken = {
+		
+	}
+}
+test_decision.3 = {
+	possible = {
+		always = yes
+
+	}
+	when_taken = {
+		add_journal_entry = {type = je_com_rise_of_communism}
 	}
 }
 

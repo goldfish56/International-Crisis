@@ -1,0 +1,182 @@
+ic_terri_opposite_rank_value = {
+	
+	value = 0
+
+	add = {
+		if = {
+			limit = {
+				any_country = {
+					this = global_var:terri_crisis_opposite
+				}
+			}
+			
+		}
+		value = {
+			value = global_country_ranking
+			subtract = 100
+		}
+		multiply = -0.1
+	}
+
+}
+ic_terri_target_rank_value = {
+	add = {
+		if = {
+			limit = {
+				any_country = {
+					this = global_var:terri_crisis_target
+				}
+			}
+			
+		}
+		value = {
+			value = global_country_ranking
+			subtract = 100
+		}
+		multiply = -0.1
+	}
+}
+ic_request_of_opposite_accept_chance = {
+	value = 0
+	if = {
+		limit = {
+			any_country = {
+				this = root
+				any_treaty = {
+					any_scope_article = {
+						binds = scope:terri_crisis_opposite
+						has_type = alliance
+					}
+				}
+			}
+		}
+		add = 100
+	}
+	if = {
+		limit = {
+			any_country = {
+				this = root
+				any_treaty = {
+					any_scope_article = {
+						binds = scope:terri_crisis_opposite
+						has_type = defensive_pact
+					}
+				}
+			}
+		}
+		add = 90
+	}
+	if = {
+		limit = {
+			any_country = {
+				this = root
+				any_treaty = {
+					any_scope_article = {
+						binds = scope:terri_crisis_opposite
+						has_type = guarantee_independence
+					}
+				}
+			}
+		}
+		add = 60
+	}
+	if = {
+		limit = {
+			ic_terri_target_rank_value < ic_terri_opposite_rank_value
+		}
+		add = 10
+	}
+	add = {
+		if = {
+			limit = {
+				any_country = {
+					this = scope:terri_crisis_opposite
+				}
+			}
+		}
+		value = infamy
+		multiply = -0.8
+	}
+	if = {
+		limit = {
+			any_country = {
+				this = scope:terri_crisis_opposite
+				is_country_type = unrecognized
+			}
+		}
+		add = -10
+	}
+
+}
+ic_request_of_target_accept_chance = {
+	value = 0
+	if = {
+		limit = {
+			any_country = {
+				this = root
+				any_treaty = {
+					any_scope_article = {
+						binds = scope:terri_crisis_target
+						has_type = alliance
+					}
+				}
+			}
+		}
+		add = 100
+	}
+	if = {
+		limit = {
+			any_country = {
+				this = root
+				any_treaty = {
+					any_scope_article = {
+						binds = scope:terri_crisis_target
+						has_type = defensive_pact
+					}
+				}
+			}
+		}
+		add = 90
+	}
+	if = {
+		limit = {
+			any_country = {
+				this = root
+				any_treaty = {
+					any_scope_article = {
+						binds = scope:terri_crisis_target
+						has_type = guarantee_independence
+					}
+				}
+			}
+		}
+		add = 60
+	}
+	if = {
+		limit = {
+			ic_terri_opposite_rank_value < ic_terri_target_rank_value
+		}
+		add = 10
+	}
+	add = {
+		if = {
+			limit = {
+				any_country = {
+					this = scope:terri_crisis_target
+				}
+			}
+		}
+		value = infamy
+		multiply = -0.8
+	}
+	if = {
+		limit = {
+			any_country = {
+				this = scope:terri_crisis_target
+				is_country_type = unrecognized
+			}
+		}
+		add = -10
+	}
+
+}

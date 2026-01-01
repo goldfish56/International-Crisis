@@ -1,0 +1,24 @@
+terri_crisis_balance_progress_bar = {
+	name = "terri_crisis_balance_progress_bar"
+	desc = "terri_crisis_balance_progress_bar_desc"
+    start_value = 100
+    min_value = 0
+    max_value = 200
+    monthly_progress = {
+        every_country = {
+            limit = {
+                this = global_var:terri_crisis_opposite
+                
+            }
+            add = ic_terri_opposite_rank_value
+        }
+        every_country = {
+            limit = {
+                this = global_var:terri_crisis_target
+            }
+            subtract = ic_terri_target_rank_value
+        }
+    }
+    double_sided_bad = yes
+    
+}

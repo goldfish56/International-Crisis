@@ -7,19 +7,41 @@ ic_territory.1 = {
 	title = ic_territory.1.t
 	desc = ic_territory.1.d
 	flavor = ic_territory.1.f
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
 	
-	trigger = {
-		always = yes
-	}
 
     duration = 3
 
 	event_image = {
 		video = "europenorthamerica_springtime_of_nations"
 	}
+
 	immediate = {
 		
+		every_state = {
+			limit = {
+				is_capital = yes
+				owner = global_var:terri_crisis_target
+			}
+			region = {
+				save_scope_as = terri_crisis_region_target
+			}
+		}
+		every_state = {
+			limit = {
+				is_capital = yes
+				owner = global_var:terri_crisis_opposite
+			}
+			region = {
+				save_scope_as = terri_crisis_region_opposite
+			}
+		}
 	}
+
+	trigger = {
+		always = yes
+	}
+
 
     option = {
 
@@ -36,9 +58,31 @@ ic_territory.1 = {
 	
 
 	after = {
-		add_journal_entry = {
-			type = je_international_crisis_territory
-		}	
+		every_country = {
+			limit = {
+				or = {
+					
+					this = global_var:terri_crisis_target
+					this = global_var:terri_crisis_opposite
+					AND = {
+						OR = {
+							country_rank >= rank_value:major_power
+						}
+						is_subject = no
+						# OR = {
+						# 	has_interest_marker_in_region = scope:terri_crisis_region_target
+						# 	has_interest_marker_in_region = scope:terri_crisis_region_opposite
+						# }
+						
+					}
+					
+				}
+			}
+			add_journal_entry = {
+				type = je_international_crisis_territory
+			}
+			set_variable = involved_in_terri
+		}
 	}
 }
 
@@ -49,33 +93,224 @@ ic_territory.2 = {
 	title = ic_territory.2.t
 	desc = ic_territory.2.d
 	flavor = ic_territory.2.f
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
     duration = 3
 	immediate = {
-		
+		scope:terri_crisis_opposite = {
+			if = {
+				limit = { 
+				}
+			}
+		}
 	}
 	event_image = {
 		video = "europenorthamerica_springtime_of_nations"
 	}
 	option = {
-		add_journal_entry = {
-			type = je_international_crisis_territory
-		}	
+	
 		ai_chance = {
-			base = 100 #모딩 필요
+			base = 300 #모딩 필요
+        #     modifier = {
+        #         trigger = {
+        #             any_scope_treaty = {
+        #                 any_scope_article = {
+        #                     OR = {
+        #                         has_type = alliance
+        #                         has_type = defensive_pact
+        #                     }
+        #                 }
+        #             }
+        #         }
+        #         add = 3000
+        #     }
+		# 	modifier = {
+		# 		trigger = {
+		# 			any_scope_country = {
+		# 				this = scope:terri_crisis_opposite
+		# 				prestige >= 5
+		# 			}
+		# 		}
+		# 	}
+
+		# 	if = {
+		# 		limit = {
+		# 			has_strategy = ai_strategy_armed_isolationism
+		# 		}
+		# 		add = {
+		# 			add = -40
+		# 		}
+		# 	}
+		# 		if = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = antagonistic
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = domineering
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = belligerent
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = rebellious
+		# 					}
+		# 				}
+		# 			}
+		# 			add = -1000
+		# 		}
+		# 		else_if = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = wary
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = disinterested
+		# 					}
+		# 				}
+		# 			}
+		# 			add = 50
+		# 		}
+		# 	if = {
+		# 		limit = {
+		# 			exists = power_bloc
+		# 			exists = scope:terri_crisis_opposite.power_bloc
+		# 		}
+		# 	}
 		}
 		every_country = {
 			limit = {
-				this = global_var:crisis_target
+				this = global_var:terri_crisis_target
 			}
 			trigger_event = ic_territory.1
 		}
-		
 	}
+	
 	option = {
-		
-	}
-	after = {
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = ic_territory.3
+		}
+		ai_chance = {
+			base = 100
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_opposite
+								has_type = alliance
+							}
+						}
+						
+					}
 
+				}
+				add = -150
+			}
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_target
+								has_type = guarantee_independence
+							}
+						}
+						
+					}
+				}
+				add = 50
+			}
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_opposite
+								has_type = defensive_pact
+							}
+						}
+						
+					}
+				}
+				add = -80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:great_power
+					}
+				}
+				add = -100
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:major_power
+					}
+				}
+				add = -80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						OR = {
+							country_rank = rank_value:unrecognized_power
+							country_rank = rank_value:insignificant_power
+						}
+					}
+				}
+				add = -40
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:unrecognized_regional_power
+					}
+				}
+				add = -80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						OR = {
+							country_rank = rank_value:unrecognized_major_power
+							country_rank = rank_value:minor_power
+						}
+					}
+				}
+				add = -90
+			}
+		}
+
+	
 	}
 }
 
@@ -86,15 +321,102 @@ ic_territory.3 = {
 	title = ic_territory.3.t
 	desc = ic_territory.3.d
 	flavor = ic_territory.3.f
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
     duration = 3
 	immediate = {
-		
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			save_scope_as = terri_crisis_target
+		}
 	}
 	event_image = {
-		video = "africa_diplomats_negotiating"
+		video = "unspecific_signed_contract"
 	}
 	option = {
-		annex = scope:terri_crisis_land
+		every_state = {
+			limit = {
+				has_claim_by = scope:terri_crisis_target
+				owner = scope:terri_crisis_opposite
+			}
+			set_state_owner = scope:terri_crisis_target
+		}
 	}
+}
 
+#request for help/oppo
+ic_territory.4 = {
+	type = country_event
+	placement = root
+	title = ic_territory.4.t
+	desc = ic_territory.4.d
+	flavor = ic_territory.4
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		ai_chance = {
+			value = ic_request_of_opposite_accept_chance
+		}
+		this = {
+			save_scope_as = terri_help_country
+		}
+		add_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_left
+			side = left
+			country = scope:terri_help_country
+		}
+	}
+	option = {
+		ai_chance = {
+			value = 100
+
+		}
+	}
+}
+ic_territory.5 = {
+	type = country_event
+	placement = root
+	title = ic_territory.5.t
+	desc = ic_territory.5.d
+	flavor = ic_territory.5
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		ai_chance = {
+			#value = ic_request_of_target_accept_chance
+			value = 100
+		}
+		this = {
+			save_scope_as = terri_help_country
+		}
+		remove_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_faction_bystanders
+			country = scope:terri_help_country
+			side = neutral
+		}
+		add_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_left
+			side = right
+			country = scope:terri_help_country
+		}
+	}
+	option = {
+		ai_chance = {
+			value = 0
+			subtract = ic_request_of_target_accept_chance
+
+		}
+	}
+}
+
+#이해집단의 선동
+ic_territory.10 = {
+	type = country_event
 }

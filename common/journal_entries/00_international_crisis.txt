@@ -2,105 +2,134 @@ je_international_crisis_territory = {
 
 	group = je_group_crises
 
-	scripted_button = terri_crisis_button.1
-	scripted_progress_bar = terri_crisis_composition_progress_bar
-
+	scripted_button = sb_international_crisis_territory_request_help_oppo
+	scripted_button = sb_international_crisis_territory_request_help_tar
+	scripted_progress_bar = terri_crisis_balance_progress_bar
+    on_monthly_pulse = {
+        random_events = {
+            200 = 0
+            #10 = ic_territory.10
+        }
+    }
+    
 	immediate = {
         every_country = {
             limit = {
-                this = global_var:crisis_opposite
+                this = global_var:terri_crisis_opposite
             }
-            save_scope_as = crisis_opposite
+            save_scope_as = terri_crisis_opposite
         }
         every_country = {
             limit = {
-                this = global_var:crisis_target
+                this = global_var:terri_crisis_target
             }
-            save_scope_as = crisis_target
+            save_scope_as = terri_crisis_target
         }
+
             
         
         create_com_situation = {
             situation_id = je_com_international_crisis_territory
             icon = com_icon_rise_of_communism
 
-            side_leader_country_left = scope:crisis_opposite
+            side_leader_country_left = scope:terri_crisis_opposite
             side_name_left = je_com_international_crisis_territory_left
             side_desc_left = je_com_international_crisis_territory_left_desc
 
-            side_leader_country_right = scope:crisis_target
+            side_leader_country_right = scope:terri_crisis_target
             side_name_right = je_com_international_crisis_territory_right
-            side_desc_right = je_com_international_crisis_territory_sright_desc
+            side_desc_right = je_com_international_crisis_territory_right_desc
         }
 
         set_com_situation_header = {
             text = je_com_international_crisis_territory_header
         }
 
-        # Create Hardliners faction
+        # Create oppo
         create_com_situation_faction = {
             side = left
-            name = je_com_international_crisis_territory_hardliners
+            name = je_com_international_crisis_territory_left
             desc = je_com_international_crisis_territory_desc
         }
         add_com_situation_faction_country = {
             side = left
-            name = je_com_international_crisis_territory_hardliners
-            country = c:CHI
+            name = je_com_international_crisis_territory_left
+            country = scope:terri_crisis_opposite
         }
 
 
-        # Create Fascist faction
+        # Create tar
         create_com_situation_faction = {
             side = right
-            name = je_com_international_crisis_territory_fascists
-            desc = je_com_international_crisis_territory_fascists_desc
+            name = je_com_international_crisis_territory_right
+            desc = je_com_international_crisis_territory_right_desc
         }
         add_com_situation_faction_country = {
             side = right
-            name = je_com_international_crisis_territory_fascists
-            country = c:SWI
+            name = je_com_international_crisis_territory_right
+            country = scope:terri_crisis_target
         }
 		
         # Create Bystanders faction
         create_com_situation_faction = {
             side = neutral
-            name = je_com_rise_of_communism_faction_bystanders
-            desc = je_com_rise_of_communism_faction_bystanders_desc
+            name = je_com_international_crisis_territory_faction_bystanders
+            desc = je_com_international_crisis_territory_faction_bystanders_desc
         }
         add_com_situation_faction_country = {
             side = neutral
-            name = je_com_rise_of_communism_faction_bystanders
-            country = c:PRU
+            name = je_com_international_crisis_territory_faction_bystanders
         }
 
 		
         # Create Main Actions button group
         create_com_situation_button_group = {
-            name = je_com_rise_of_communism_button_group_main_actions
-            desc = je_com_rise_of_communism_button_group_main_actions_desc
-            scripted_button = terri_crisis_button
+            name = je_com_international_crisis_territory_button_group_main_actions
+            desc = je_com_international_crisis_territory_button_group_main_actions_desc
         }
         add_com_situation_button_group_element = {
-            group = je_com_rise_of_communism_button_group_main_actions
-            name = sb_com_rise_of_communism_test
+            group = je_com_international_crisis_territory_button_group_main_actions
+            name = none
         }
 
         # Create Diplomatic Actions button group
         create_com_situation_button_group = {
-            name = je_com_rise_of_communism_button_group_diplomatic_actions
-            desc = je_com_rise_of_communism_button_group_diplomatic_actions_desc
+            name = je_com_international_crisis_territory_button_group_diplomatic_actions
+            desc = je_com_international_crisis_territory_button_group_diplomatic_actions_desc
             
         }
         add_com_situation_button_group_element = {
-            group = je_com_rise_of_communism_button_group_diplomatic_actions
-            name = sb_com_rise_of_communism_test2
+            group = je_com_international_crisis_territory_button_group_diplomatic_actions
+            name = sb_international_crisis_territory_request_help_oppo
         }
         add_com_situation_button_group_element = {
-            group = je_com_rise_of_communism_button_group_diplomatic_actions
-            name = sb_com_rise_of_communism_test3
+            group = je_com_international_crisis_territory_button_group_diplomatic_actions
+            name = sb_international_crisis_territory_request_help_tar
         }
+        ordered_country = {
+            limit = {
+                and = {
+                    this != global_var:terri_crisis_opposite
+                    this != global_var:terri_crisis_target
+                    NOT = {
+                        AND = {
+                            has_variable = ordered_loop
+                            
+                        }
 
+                    }
+                    has_variable = involved_in_terri
+                }
+            }
+            save_scope_as = add_terri_country_loop
+            
+            add_com_situation_faction_country = {
+                side = neutral
+                name = je_com_international_crisis_territory_faction_bystanders
+                country = scope:add_terri_country_loop
+            }
+            set_variable = {name = ordered_loop days = 4}
+        }
 	}
 
 	possible = {
@@ -111,7 +140,7 @@ je_international_crisis_territory = {
 
 	
 
-    progressbar = no
+    progressbar = yes
     transferable = no
     can_deactivate = no
     can_revolution_inherit = yes
