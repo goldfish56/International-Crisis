@@ -1,4 +1,4 @@
-je_international_crisis_territory = {
+﻿je_international_crisis_territory = {
 
 	group = je_group_crises
 
@@ -45,7 +45,7 @@ je_international_crisis_territory = {
             text = je_com_international_crisis_territory_header
         }
 
-        # Create oppo
+        # Create oppo/left/maxico
         create_com_situation_faction = {
             side = left
             name = je_com_international_crisis_territory_left
@@ -58,7 +58,7 @@ je_international_crisis_territory = {
         }
 
 
-        # Create tar
+        # Create tar/right/us
         create_com_situation_faction = {
             side = right
             name = je_com_international_crisis_territory_right
@@ -140,7 +140,7 @@ je_international_crisis_territory = {
 
 	
 
-    progressbar = yes
+
     transferable = no
     can_deactivate = no
     can_revolution_inherit = yes

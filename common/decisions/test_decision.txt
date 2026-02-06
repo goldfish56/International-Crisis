@@ -1,13 +1,18 @@
-test_decision = {
+﻿test_decision = {
 	is_shown = {
 		always = yes
 	}
-
+	
 	possible = {
 			is_subject = no
 			
 			aggressive_diplomatic_plays_permitted = yes
 			any_country = {
+				this = ROOT
+				save_temporary_scope_as = temp_claim_country
+			}
+			any_country = {
+				count = 1
 				#is_country_type = recognized
 				
 				NOT = {
@@ -22,25 +27,26 @@ test_decision = {
 				any_neighbouring_state = {
 					
 					owner = root
-					has_claim_by = root
+					has_claim_by = scope:temp_claim_country
 				}
 				save_temporary_scope_as = crisis_temp
 			}
-			any_country = {
-				exists = scope:crisis_temp
-				NOR = {
-					is_subject = yes
+			# any_country = {
+			# 	count = 1
+			# 	exists = scope:crisis_temp
+			# 	NOR = {
+			# 		is_subject = yes
 					
-					is_country_type = decentralized
-					THIS = ROOT
-				}
-				any_neighbouring_state = {
+			# 		is_country_type = decentralized
+			# 		THIS = ROOT
+			# 	}
+			# 	any_neighbouring_state = {
 						
-					owner = root
-					has_claim_by = root
-				}
-				save_temporary_scope_as = crisis_temp
-			}
+			# 		owner = root
+			# 		has_claim_by = scope:temp_claim_country
+			# 	}
+			# 	save_temporary_scope_as = crisis_temp
+			# }
 			any_neighbouring_state = {
 				count >= 1
 				owner = scope:crisis_temp
@@ -50,53 +56,76 @@ test_decision = {
 
 				is_country_type = decentralized
 			}
-
+			# 이게 왜 되지????????
+			# 나도 모르겠다 ㅅㅂ 되기만 하면 됐지
 
 	}
 
 	when_taken = {
-		every_country = {
-			limit = {
-				NOT = {
-					is_subject = yes
-			
-					is_country_type = decentralized
-					THIS = ROOT
-				}
-				any_neighbouring_state = {
-					has_claim_by = root
-					owner = root
+		# if = {							#수정필요 다중국가 선택시 선택창 등장
+		# 	limit = {
+		# 		any_country = {
+		# 			count >= 2
+		# 				NOT = {
+		# 					is_subject = yes
 					
+		# 					is_country_type = decentralized
+		# 					THIS = ROOT
+		# 				}
+		# 				any_neighbouring_state = {
+		# 					has_claim_by = root
+		# 					owner = root
+							
+		# 				}
+					
+		# 		}
+		# 	}
+		# }
+		#else = {
+			every_country = {
+				limit = {
+					NOT = {
+						is_subject = yes
+				
+						is_country_type = decentralized
+						THIS = ROOT
+					}
+					any_neighbouring_state = {
+						has_claim_by = root
+						owner = root
+						
+					}
+				}
+				save_scope_as = terri_crisis_opposite
+				trigger_event = ic_territory.2
+				set_global_variable = {
+					name = terri_crisis_opposite
+					value = scope:terri_crisis_opposite
 				}
 			}
-			save_scope_as = terri_crisis_opposite
-			trigger_event = ic_territory.2
-			set_global_variable = {
-				name = terri_crisis_opposite
-				value = scope:terri_crisis_opposite
-			}
-		}
-		this = {
-		
-			save_scope_as = terri_crisis_target
-			set_global_variable = {
-				name = terri_crisis_target
-				value = scope:terri_crisis_target
-			}
-		}
-		every_neighbouring_state = {
-			limit = {
-				has_claim_by = scope:terri_crisis_target
-				owner = scope:terri_crisis_opposite
-			}
-			save_scope_as = terri_crisis_land
-			set_global_variable = {
-				name = terri_crisis_land
-				value = this
-			}
+			this = {
 			
-			
-		}
+				save_scope_as = terri_crisis_target
+				set_global_variable = {
+					name = terri_crisis_target
+					value = scope:terri_crisis_target
+				}
+			}
+			every_neighbouring_state = {
+				limit = {
+					has_claim_by = scope:terri_crisis_target
+					owner = scope:terri_crisis_opposite
+				}
+				save_scope_as = terri_crisis_land
+				set_global_variable = {
+					name = terri_crisis_land
+					value = this
+				}
+				
+				
+			}
+		#}
+
 
 	}
 
@@ -108,8 +137,21 @@ test_decison.2 = {
 	is_shown = {
 		always = yes
 	}
-	possible = {
-	}
+	# possible = {
+	# 	any_country = {
+	# 		save_temporary_scope_as = temp_claim_country
+	# 	}
+    #         any_country = {
+	# 			count = 1
+               
+                
+    #             # 조건: 내가 상대방의 땅 중 하나라도 명분이 있는가?
+    #             any_scope_state = {
+    #                 owner = scope:temp_claim_country
+    #                 has_claim_by = ROOT
+    #             }
+    #         }
+    #     }
 	when_taken = {
 		
 	}
@@ -120,7 +162,7 @@ test_decision.3 = {
 
 	}
 	when_taken = {
-		add_journal_entry = {type = je_com_rise_of_communism}
+		trigger_event = test_event.1
 	}
 }
 

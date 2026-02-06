@@ -1,4 +1,4 @@
-# terri_crisis_button.1 = {
+﻿# terri_crisis_button.1 = {
 # 	desc = terri_crisis_button.1.desc
 # 	name = terri_crisis_button.1.name
 # 	possible = {
@@ -42,18 +42,41 @@ sb_international_crisis_territory_request_help_oppo = {
 		this = global_var:terri_crisis_opposite
 	}
 	effect = {
-		every_country = {
+		set_global_variable = {name = terri_help_oppo_county_number value = 0}
+		ordered_country = {
 			limit = {
 				NOR = {
 					this = global_var:terri_crisis_opposite
 					this = global_var:terri_crisis_target
+					
 				}
 				is_in_any_com_situation_faction = yes
 				#반대편에 있으면 못 참가하게 하기
 			}
-			trigger_event = ic_territory.4
+			change_global_variable = {
+				name = terri_help_oppo_county_number
+				add = 1
+			}
 		}
-		
+		random_country = {
+			limit = {
+				NOR = {
+					this = global_var:terri_crisis_opposite
+					this = global_var:terri_crisis_target
+					
+				}
+				NOT = {
+					has_variable = terri_help_oppo_country
+				}
+				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_oppo_county_number
+				subtract = 1
+			}
+			trigger_event = ic_territory.4
+		}	
 	}
 }
 sb_international_crisis_territory_request_help_tar = {
@@ -67,16 +90,41 @@ sb_international_crisis_territory_request_help_tar = {
 		
 	}
 	effect = {
-		every_country = {
+		set_global_variable = {name = terri_help_tar_county_number value = 0}
+		ordered_country = {
 			limit = {
 				NOR = {
 					this = global_var:terri_crisis_opposite
 					this = global_var:terri_crisis_target
+					
 				}
 				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_tar_county_number
+				add = 1
+			}
 
+		}
+		random_country = {
+			limit = {
+				NOR = {
+					this = global_var:terri_crisis_opposite
+					this = global_var:terri_crisis_target
+					
+				}
+				NOT = {
+					has_variable = terri_help_tar_country
+				}
+				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_tar_county_number
+				subtract = 1
 			}
 			trigger_event = ic_territory.5
-		}
+		}	
 	}
 }
