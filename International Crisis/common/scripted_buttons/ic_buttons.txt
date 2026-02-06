@@ -1,0 +1,130 @@
+﻿# terri_crisis_button.1 = {
+# 	desc = terri_crisis_button.1.desc
+# 	name = terri_crisis_button.1.name
+# 	possible = {
+# 		NOT = {
+			
+# 			has_variable = terri_crisis_cooldown
+# 		}
+# 		#custom_description = {
+# 		#the nation should be opposite or target
+# 		#}
+# 	}
+# 	ai_chance = {
+# 		value = 100
+
+# 	}
+#     effect = {
+# 		set_variable = {name = terri_crisis_cooldown years = 1}
+# 		if = {
+# 			limit = {
+# 				this = scope:ic_opposite_nation
+# 			}
+# 			trigger_event = { id = ic_territory.2}
+# 		}
+# 		if = {
+# 			limit = {
+# 				this = scope:ic_target_nation
+# 			}
+# 			trigger_event = {id = ic_territory.3}
+# 		}
+# 	}
+
+# }
+
+sb_international_crisis_territory_request_help_oppo = {
+	desc = sb_international_crisis_territory_request_help_desc
+	name = sb_international_crisis_territory_request_help_oppo
+	visible = {
+		this = global_var:terri_crisis_opposite
+	}
+	possible = {
+		this = global_var:terri_crisis_opposite
+	}
+	effect = {
+		set_global_variable = {name = terri_help_oppo_county_number value = 0}
+		ordered_country = {
+			limit = {
+				NOR = {
+					this = global_var:terri_crisis_opposite
+					this = global_var:terri_crisis_target
+					
+				}
+				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_oppo_county_number
+				add = 1
+			}
+		}
+		random_country = {
+			limit = {
+				NOR = {
+					this = global_var:terri_crisis_opposite
+					this = global_var:terri_crisis_target
+					
+				}
+				NOT = {
+					has_variable = terri_help_oppo_country
+				}
+				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_oppo_county_number
+				subtract = 1
+			}
+			trigger_event = ic_territory.4
+		}	
+	}
+}
+sb_international_crisis_territory_request_help_tar = {
+	desc = sb_international_crisis_territory_request_help_desc
+	name = sb_international_crisis_territory_request_help_tar
+	visible = {
+		this = global_var:terri_crisis_target
+	}
+	possible = {
+		this = global_var:terri_crisis_target
+		
+	}
+	effect = {
+		set_global_variable = {name = terri_help_tar_county_number value = 0}
+		ordered_country = {
+			limit = {
+				NOR = {
+					this = global_var:terri_crisis_opposite
+					this = global_var:terri_crisis_target
+					
+				}
+				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_tar_county_number
+				add = 1
+			}
+
+		}
+		random_country = {
+			limit = {
+				NOR = {
+					this = global_var:terri_crisis_opposite
+					this = global_var:terri_crisis_target
+					
+				}
+				NOT = {
+					has_variable = terri_help_tar_country
+				}
+				is_in_any_com_situation_faction = yes
+				#반대편에 있으면 못 참가하게 하기
+			}
+			change_global_variable = {
+				name = terri_help_tar_county_number
+				subtract = 1
+			}
+			trigger_event = ic_territory.5
+		}	
+	}
+}

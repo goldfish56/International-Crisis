@@ -1,0 +1,1173 @@
+﻿namespace = ic_territory
+
+#event for refuged
+ic_territory.1 = {
+    type = country_event
+    placement = root
+	title = ic_territory.1.t
+	desc = ic_territory.1.d
+	flavor = ic_territory.1.f
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+
+    duration = 3
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+	immediate = {
+		
+		every_state = {
+			limit = {
+				is_capital = yes
+				owner = global_var:terri_crisis_target
+			}
+			region = {
+				save_scope_as = terri_crisis_region_target
+			}
+		}
+		every_state = {
+			limit = {
+				is_capital = yes
+				owner = global_var:terri_crisis_opposite
+			}
+			region = {
+				save_scope_as = terri_crisis_region_opposite
+			}
+		}
+	}
+
+	trigger = {
+		always = yes
+	}
+
+
+    option = {
+
+		name = ic_territory.1.o
+
+		default_option = yes
+
+		ai_chance = {
+			base = 100
+		}
+
+
+    }
+	
+
+	after = {
+		every_country = {
+			limit = {
+				or = {
+					
+					this = global_var:terri_crisis_target
+					this = global_var:terri_crisis_opposite
+					AND = {
+						OR = {
+							country_rank >= rank_value:major_power
+						}
+						is_subject = no
+						# OR = {
+						# 	has_interest_marker_in_region = scope:terri_crisis_region_target
+						# 	has_interest_marker_in_region = scope:terri_crisis_region_opposite
+						# }
+						
+					}
+					
+				}
+			}
+			add_journal_entry = {
+				type = je_international_crisis_territory
+			}
+			set_variable = involved_in_terri
+		}
+	}
+}
+
+#event for opposite
+ic_territory.2 = {
+    type = country_event
+    placement = root
+	title = ic_territory.2.t
+	desc = ic_territory.2.d
+	flavor = ic_territory.2.f
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+    duration = 3
+	immediate = {
+		scope:terri_crisis_opposite = {
+			if = {
+				limit = { 
+				}
+			}
+		}
+	}
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+	option = {
+	
+		ai_chance = {
+			base = 300 #모딩 필요
+        #     modifier = {
+        #         trigger = {
+        #             any_scope_treaty = {
+        #                 any_scope_article = {
+        #                     OR = {
+        #                         has_type = alliance
+        #                         has_type = defensive_pact
+        #                     }
+        #                 }
+        #             }
+        #         }
+        #         add = 3000
+        #     }
+		# 	modifier = {
+		# 		trigger = {
+		# 			any_scope_country = {
+		# 				this = scope:terri_crisis_opposite
+		# 				prestige >= 5
+		# 			}
+		# 		}
+		# 	}
+
+		# 	if = {
+		# 		limit = {
+		# 			has_strategy = ai_strategy_armed_isolationism
+		# 		}
+		# 		add = {
+		# 			add = -40
+		# 		}
+		# 	}
+		# 		if = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = antagonistic
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = domineering
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = belligerent
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = rebellious
+		# 					}
+		# 				}
+		# 			}
+		# 			add = -1000
+		# 		}
+		# 		else_if = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = wary
+		# 					}
+		# 					has_attitude = {
+		# 						who = scope:terri_crisis_opposite
+		# 						attitude = disinterested
+		# 					}
+		# 				}
+		# 			}
+		# 			add = 50
+		# 		}
+		# 	if = {
+		# 		limit = {
+		# 			exists = power_bloc
+		# 			exists = scope:terri_crisis_opposite.power_bloc
+		# 		}
+		# 	}
+		}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.1 popup = yes}
+		}
+	}
+	
+	option = {
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.3 popup = yes}
+		}
+		ai_chance = {
+			base = 100
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_opposite
+								has_type = alliance
+							}
+						}
+						
+					}
+
+				}
+				add = -150
+			}
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_target
+								has_type = guarantee_independence
+							}
+						}
+						
+					}
+				}
+				add = 50
+			}
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_opposite
+								has_type = defensive_pact
+							}
+						}
+						
+					}
+				}
+				add = -80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:great_power
+					}
+				}
+				add = -100
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:major_power
+					}
+				}
+				add = -80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						OR = {
+							country_rank = rank_value:unrecognized_power
+							country_rank = rank_value:insignificant_power
+						}
+					}
+				}
+				add = -40
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:unrecognized_regional_power
+					}
+				}
+				add = -80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						OR = {
+							country_rank = rank_value:unrecognized_major_power
+							country_rank = rank_value:minor_power
+						}
+					}
+				}
+				add = -90
+			}
+		}
+
+	
+	}
+}
+
+#event for agreed
+ic_territory.3 = {
+    type = country_event
+    placement = root
+	title = ic_territory.3.t
+	desc = ic_territory.3.d
+	flavor = ic_territory.3.f
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+    duration = 3
+	immediate = {
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			save_scope_as = terri_crisis_target
+		}
+	}
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		every_state = {
+			limit = {
+				has_claim_by = scope:terri_crisis_target
+				owner = scope:terri_crisis_opposite
+			}
+			set_state_owner = scope:terri_crisis_target
+		}
+	}
+}
+
+#request for help/oppo
+ic_territory.4 = {
+	type = country_event
+	placement = root
+	title = ic_territory.4.t
+	desc = ic_territory.4.d
+	flavor = ic_territory.4
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		ai_chance = {
+			value = ic_request_of_opposite_accept_chance
+		}
+		this = {
+			save_scope_as = terri_help_oppo_country
+			set_variable = terri_help_oppo_country
+		}
+		remove_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_faction_bystanders
+			country = scope:terri_help_oppo_country
+			side = neutral
+		}
+		add_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_right
+			side = right
+			country = scope:terri_help_oppo_country
+		}
+		if = {
+			limit = {
+				global_var:terri_help_oppo_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_oppo_country
+					}
+					is_com_situation_faction_member = {					
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_oppo_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.4 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_oppo_country
+			}
+		}
+	}
+	option = {
+		set_global_variable = ongoing_terri_request
+		ai_chance = {
+			value = 140
+			subtract = ic_request_of_target_accept_chance
+		}
+		every_country = {
+			limit = {
+				this = scope:terri_crisis_opposite
+			}
+			trigger_event = {id = ic_territory.8 popup = yes}
+		}
+		
+	}
+	option = {
+		ai_chance = {
+			value = 100
+			subtract = ic_request_of_target_accept_chance
+		}
+		trigger_event = {id = ic_territory.6 popup = yes}
+	}
+	after = {
+		set_variable = terri_help_oppo_country
+
+
+	}
+}
+#request for help/tar
+ic_territory.5 = {
+	type = country_event
+	placement = root
+	title = ic_territory.5.t
+	desc = ic_territory.5.d
+	flavor = ic_territory.5.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		ai_chance = {
+			value = ic_request_of_target_accept_chance
+		}
+		this = {
+			save_scope_as = terri_help_tar_country
+		}
+		set_variable = terri_help_tar_country
+		remove_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_faction_bystanders
+			country = scope:terri_help_tar_country
+			side = neutral
+		}
+		add_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_right
+			side = right
+			country = scope:terri_help_tar_country
+		}
+		if = {
+			limit = {
+				global_var:terri_help_tar_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_tar_country
+					}
+					is_com_situation_faction_member = {					
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_tar_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.5 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_tar_country
+				
+			}
+		}
+	}
+	option = {
+		ai_chance = {
+			value = 140
+			subtract = ic_request_of_target_accept_chance
+		}
+		every_country = {
+			limit = {
+				this = scope:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.9 popup = yes}
+		}
+	}
+	option = {
+		ai_chance = {
+			value = 100
+			subtract = ic_request_of_target_accept_chance
+		}
+		trigger_event = {id = ic_territory.7 popup = yes}
+	}
+	after = {
+		set_variable = terri_help_tar_country
+	}
+}
+#help negotiation/oppo
+ic_territory.6 = {
+	type = country_event
+	placement = root
+	title = ic_territory.6.t
+	desc = ic_territory.6.d
+	flavor = ic_territory.6.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_oppo
+		}
+		set_global_variable = {name = terri_oppo_negotiation value = 1}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_opposite
+			}
+			trigger_event = {id = ic_territory.10 popup = yes}
+		}
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_oppo
+		}
+		set_global_variable = {name = terri_oppo_negotiation value = 2}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_opposite
+			}
+			trigger_event = {id = ic_territory.10 popup = yes}
+		}
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_oppo
+		}
+		set_global_variable = {name = terri_oppo_negotiation value = 3}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_opposite
+			}
+			trigger_event = {id = ic_territory.10 popup = yes}
+		}
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_oppo
+		}
+		set_global_variable = {name = terri_oppo_negotiation value = 4}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_opposite
+			}
+			trigger_event = {id = ic_territory.10 popup = yes}
+		}
+	}
+	option = {#협상포기
+	every_country = {
+		limit = {
+			this = scope:terri_crisis_opposite
+		}
+		trigger_event = {id = ic_territory.8 popup = yes}
+	}
+	}
+	after = {
+
+	}
+}
+#help negotiation/tar
+ic_territory.7 = {
+	type = country_event
+	placement = root
+	title = ic_territory.7.t
+	desc = ic_territory.7.d
+	flavor = ic_territory.7.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_tar
+		}
+		set_global_variable = {name = terri_tar_negotiation value = 1}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.11 popup = yes}
+		}
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_tar
+		}
+		set_global_variable = {name = terri_tar_negotiation value = 2}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.11 popup = yes}
+		}
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_tar
+		}
+		set_global_variable = {name = terri_tar_negotiation value = 3}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.11 popup = yes}
+		}
+
+	}
+	option = {
+		every_country = {
+			limit = {
+				this = root
+			}
+			set_variable = terri_negotiation_country_tar
+		}
+		set_global_variable = {name = terri_tar_negotiation value = 4}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.11 popup = yes}
+		}
+	}
+	option = {
+		this = {
+			save_scope_as = terri_help_refuge_country
+		}
+		every_country = {
+			limit = {
+				this = global_var:terri_crisis_target
+			}
+			trigger_event = {id = ic_territory.9 popup = yes}
+		}
+	}
+	after = {
+	}
+}
+#help_refuged/oppo
+ic_territory.8 = {
+	type = country_event
+	placement = root
+	title = ic_territory.8.t
+	desc = ic_territory.8.d
+	flavor = ic_territory.8.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+	option = {
+		
+	}
+	after = {
+		if = {
+			limit = {
+				global_var:terri_help_oppo_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_oppo_country
+					}
+					is_com_situation_faction_member = {					
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_oppo_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.4 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_oppo_country
+			}
+		}
+	}
+}
+#help_refuged/tar
+ic_territory.9 = {
+	type = country_event
+	placement = root
+	title = ic_territory.9.t
+	desc = ic_territory.9.d
+	flavor = ic_territory.9.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+	option = {
+		
+	}
+	after = {
+		if = {
+			limit = {
+				global_var:terri_help_tar_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_tar_country
+					}
+					is_com_situation_faction_member = {						
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_tar_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.5 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_tar_country
+			}
+		}
+	}
+}
+
+#help negotiation/for oppo
+ic_territory.10 = {
+	type = country_event
+	placement = root
+	title = ic_territory.10.t
+	desc = ic_territory.10.d
+	flavor = ic_territory.10.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		if = {
+			limit = {
+				global_var:terri_oppo_negotiation = 1
+			}
+			add_modifier = terri_negotiation_cost_1
+		}
+		if = {
+			limit = {
+				global_var:terri_oppo_negotiation = 2
+			}
+		}
+		if = {
+			limit = {
+				global_var:terri_oppo_negotiation = 3
+			}
+		}
+		if = {
+			limit = {
+				global_var:terri_oppo_negotiation = 4
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = terri_negotiation_country_oppo
+			}
+			trigger_event = {id = ic_Territory.12 popup = yes}
+		}
+
+	}
+	option = {
+		every_country = {
+			limit = {
+				has_variable = terri_negotiation_country_oppo
+			}
+			trigger_event = {id = ic_Territory.13 popup = yes}
+		}
+	}
+}
+
+#help negotiation/for tar
+ic_territory.11 = {
+	type = country_event
+	placement = root
+	title = ic_territory.11.t
+	desc = ic_territory.11.d
+	flavor = ic_territory.11.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		if = {
+			limit = {
+				global_var:terri_tar_negotiation = 1
+			}
+			every_country = {
+				limit = {
+					this = scope:terri_crisis_target
+				}
+				
+			}
+			add_modifier = {
+				name = terri_negotiation_cost_1
+				multiplier = terri_negotiation_cost_tar_money
+			}
+		}
+		if = {
+			limit = {
+				global_var:terri_tar_negotiation = 2
+			}
+			every_country = {
+				limit = {
+					has_variable = terri_negotiation_country_tar
+				}
+				save_scope_as = terri_nego_treaty_country
+			}
+			every_country = {
+				limit = {
+					this = global_var:terri_crisis_target
+				}
+				save_scope_as = terri_crisis_target
+			}
+			create_treaty = {
+				first_country = scope:terri_nego_treaty_country
+				second_country = scope:terri_crisis_target
+				binding_period = {
+					years = 5
+				}
+				
+				articles_to_create = {
+				
+				}
+			}
+		}
+		if = {
+			limit = {
+				global_var:terri_tar_negotiation = 3
+			}
+			every_country = {
+				limit = {
+					this = scope:terri_crisis_target
+				}
+				
+			}
+			add_modifier = {
+				name = terri_negotiation_cost_1
+				multiplier = terri_negotiation_cost_tar_money
+			}
+		}
+		if = {
+			limit = {
+				global_var:terri_tar_negotiation = 4
+			}
+			every_country = {
+				limit = {
+					this = scope:terri_crisis_target
+				}
+				
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = terri_negotiation_country_tar
+			}
+			trigger_event = {id = ic_territory.14 popup = yes}
+			remove_variable = terri_negotiation_country_tar
+		}
+	}
+	option = {
+		every_country = {
+			limit = {
+				has_variable = terri_negotiation_country_tar
+			}
+			trigger_event = {id = ic_territory.15 popup = yes}
+		}
+	}
+}
+#help negotiation/for oppo/agreed
+ic_territory.12 = {
+	type = country_event
+	placement = root
+	title = ic_territory.12.t
+	desc = ic_territory.12.d
+	flavor = ic_territory.12.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		this = {
+			save_scope_as = terri_help_oppo_country
+			set_variable = terri_help_oppo_country
+		}
+		remove_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_faction_bystanders
+			country = scope:terri_help_oppo_country
+			side = neutral
+		}
+		add_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_left
+			side = left
+			country = scope:terri_help_oppo_country
+		}
+	}
+	after = {
+		if = {
+			limit = {
+				global_var:terri_help_oppo_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_oppo_country
+					}
+					is_com_situation_faction_member = {
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_oppo_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.4 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_oppo_country
+			}
+		}
+	}
+}
+#help negotiation/for oppo/disagreed
+ic_territory.13 = {
+	type = country_event
+	placement = root
+	title = ic_territory.13.t
+	desc = ic_territory.13.d
+	flavor = ic_territory.13.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+	option = {
+
+	}
+	after = {
+		
+		if = {
+			limit = {
+				global_var:terri_help_oppo_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_oppo_country
+					}
+					is_com_situation_faction_member = {
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_oppo_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.4 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_oppo_country
+			}
+		}
+	}
+}
+
+ic_territory.14 = {
+	type = country_event
+	placement = root
+	title = ic_territory.14.t
+	desc = ic_territory.14.d
+	flavor = ic_territory.14.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	option = {
+		this = {
+			save_scope_as = terri_help_tar_country
+			set_variable = terri_help_tar_country
+		}
+		remove_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_faction_bystanders
+			country = scope:terri_help_tar_country
+			side = neutral
+		}
+		add_com_situation_faction_country = {
+			name = je_com_international_crisis_territory_right
+			side = right
+			country = scope:terri_help_tar_country
+		}
+		if = {
+			limit = {
+				global_var:terri_help_tar_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_tar_country
+					}
+					is_com_situation_faction_member = {
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+				}
+				change_global_variable = {
+					name = terri_help_tar_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.5 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_tar_country
+				
+			}
+		}
+	}
+}
+ic_territory.15 = {
+	type = country_event
+	placement = root
+	title = ic_territory.15.t
+	desc = ic_territory.15.d
+	flavor = ic_territory.15.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	option = {
+		this = {
+			remove_variable = terri_negotiation_country_tar
+		}
+		if = {
+			limit = {
+				global_var:terri_help_tar_county_number > 0
+			}
+			random_country = {
+				limit = {
+					NOR = {
+						this = global_var:terri_crisis_opposite
+						this = global_var:terri_crisis_target
+						
+					}
+					NOT = {
+						has_variable = terri_help_tar_country
+					}
+					is_com_situation_faction_member = {
+						side = neutral
+						faction = je_com_international_crisis_territory_faction_bystanders
+					}
+					#반대편에 있으면 못 참가하게 하기
+				}
+				change_global_variable = {
+					name = terri_help_tar_county_number
+					subtract = 1
+				}
+				trigger_event = {id = ic_territory.5 popup = yes}
+			}
+		}
+		else = {
+			every_country = {
+				remove_variable = terri_help_tar_country
+				
+			}
+		}
+	}
+}
