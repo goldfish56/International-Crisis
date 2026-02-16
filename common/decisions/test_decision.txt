@@ -4,36 +4,18 @@
 	}
 	
 	possible = {
-			is_subject = no
-			
-			aggressive_diplomatic_plays_permitted = yes
-			any_country = {
-				this = ROOT
-				save_temporary_scope_as = temp_claim_country
-			}
-			any_country = {
-				count = 1
-				#is_country_type = recognized
-				
-				NOT = {
-					exists = scope:crisis_temp
-				}
-				NOR = {
-					is_subject = yes
-					
-					is_country_type = decentralized
-					THIS = ROOT
-				}
-				any_neighbouring_state = {
-					
-					owner = root
-					has_claim_by = scope:temp_claim_country
-				}
-				save_temporary_scope_as = crisis_temp
-			}
+
 			# any_country = {
-			# 	count = 1
-			# 	exists = scope:crisis_temp
+			# 	this = ROOT
+			# 	save_temporary_scope_as = temp_claim_country
+			# }
+			# any_country = {
+			# 	count >= 1
+			# 	#is_country_type = recognized
+				
+			# 	# NOT = {
+			# 	# 	exists = scope:crisis_temp
+			# 	# }
 			# 	NOR = {
 			# 		is_subject = yes
 					
@@ -41,20 +23,29 @@
 			# 		THIS = ROOT
 			# 	}
 			# 	any_neighbouring_state = {
-						
+					
 			# 		owner = root
 			# 		has_claim_by = scope:temp_claim_country
 			# 	}
 			# 	save_temporary_scope_as = crisis_temp
 			# }
-			any_neighbouring_state = {
-				count >= 1
-				owner = scope:crisis_temp
-				has_claim_by = root
-			}
+			# any_neighbouring_state = {
+			# 	count >= 1
+			# 	owner = scope:crisis_temp
+			# 	has_claim_by = root
+			# }
+			is_subject = no
+			
+			aggressive_diplomatic_plays_permitted = yes
 			NOR = {
 
 				is_country_type = decentralized
+			}
+			any_neighbouring_state = {
+				NOT = {
+					owner = root
+				}
+				has_claim_by = root
 			}
 			# 이게 왜 되지????????
 			# 나도 모르겠다 ㅅㅂ 되기만 하면 됐지
@@ -62,26 +53,58 @@
 	}
 
 	when_taken = {
-		# if = {							#수정필요 다중국가 선택시 선택창 등장
-		# 	limit = {
-		# 		any_country = {
-		# 			count >= 2
-		# 				NOT = {
-		# 					is_subject = yes
-					
-		# 					is_country_type = decentralized
-		# 					THIS = ROOT
-		# 				}
-		# 				any_neighbouring_state = {
-		# 					has_claim_by = root
-		# 					owner = root
+
+		if = {							#수정필요 다중국가 선택시 선택창 등장
+			limit = {
+				any_country = {
+					this = root
+				}
+				is_subject = no
+				
+				aggressive_diplomatic_plays_permitted = yes
+				NOR = {
+
+					is_country_type = decentralized
+				}
+				any_country = {
+					any_neighbouring_state = {
+						
+						NOT = {
+							has_claim_by = root
+						}
+						owner = root
+					}
+				}
+
+				# any_country = {
+				# 	count = 1
+				# 	exists = scope:crisis_temp
+				# 	NOR = {
+				# 		is_subject = yes
+						
+				# 		is_country_type = decentralized
+				# 		THIS = ROOT
+				# 	}
+				# 	any_neighbouring_state = {
 							
-		# 				}
-					
-		# 		}
-		# 	}
-		# }
-		#else = {
+				# 		owner = root
+				# 		has_claim_by = scope:temp_claim_country
+				# 	}
+				# 	save_temporary_scope_as = crisis_temp
+				# }
+				# any_neighbouring_state = {
+				# 	count >= 1
+				# 	owner = scope:crisis_temp
+				# 	has_claim_by = root
+				# }
+				NOR = {
+
+					is_country_type = decentralized
+				}
+			}
+			trigger_event = {id = ic_territory.100 popup = yes}
+		}
+		else = {
 			every_country = {
 				limit = {
 					NOT = {
@@ -124,7 +147,7 @@
 				
 				
 			}
-		#}
+		}
 
 
 	}

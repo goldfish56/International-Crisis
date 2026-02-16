@@ -1,0 +1,86 @@
+#africa
+
+is_macro_region_west_africa = {
+	or = {
+		any_province = {
+			owner = this
+			is_capital = yes
+			OR = {
+				region = sr:region_senegal
+				region = sr:region_niger
+				region = sr:region_congo
+				region = sr:region_north_africa
+			}
+		}
+	}
+}
+
+is_macro_region_east_africa = {
+	or = {
+		any_province = {
+			owner = this
+			is_capital = yes
+			OR = {
+				region = sr:region_ethiopia
+				region = sr:region_zanj
+				region = sr:region_southern_africa
+				region = sr:region_nile_basin
+			}
+		}
+	}
+}
+#europe
+is_macro_region_west_europe = {
+	or = {
+		any_province = {
+			owner = this
+			is_capital = yes
+			OR = {
+				region = sr:region_iberia
+				region = sr:region_north_sea
+				region = sr:region_occitania
+				region = sr:region_france
+				region = sr:region_iberia
+				region = sr:region_rhine
+				region = sr:region_italy
+			}
+		}
+	}
+}
+
+is_macro_region_middle_europe = {
+	or = {
+		any_province = {
+			owner = this
+			is_capital = yes
+			OR = {
+				region = sr:region_north_germany
+				region = sr:region_south_germany
+				region = sr:region_poland
+				region = sr:region_balkans
+				region = sr:region_danubia
+			}
+		}
+	}
+}
+
+is_macro_region_east_europe = {
+	or = {
+		any_province = {
+			owner = this
+			is_capital = yes
+			OR = {
+				region = sr:region_finland
+				region = sr:region_baltic
+				region = sr:region_russia
+				region = sr:region_baltic_states
+				region = sr:region_belarus
+				region = sr:region_dnieper
+				region = sr:region_arctic_russia
+				region = sr:region_urals
+				region = sr:region_east_siberia
+				region = sr:region_west_siberia
+			}
+		}
+	}
+}

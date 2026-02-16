@@ -108,81 +108,113 @@ ic_territory.2 = {
 	option = {
 	
 		ai_chance = {
-			base = 300 #모딩 필요
-        #     modifier = {
-        #         trigger = {
-        #             any_scope_treaty = {
-        #                 any_scope_article = {
-        #                     OR = {
-        #                         has_type = alliance
-        #                         has_type = defensive_pact
-        #                     }
-        #                 }
-        #             }
-        #         }
-        #         add = 3000
-        #     }
-		# 	modifier = {
-		# 		trigger = {
-		# 			any_scope_country = {
-		# 				this = scope:terri_crisis_opposite
-		# 				prestige >= 5
-		# 			}
-		# 		}
-		# 	}
+			base = 100
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_opposite
+								has_type = alliance
+							}
+						}
+						
+					}
 
-		# 	if = {
-		# 		limit = {
-		# 			has_strategy = ai_strategy_armed_isolationism
-		# 		}
-		# 		add = {
-		# 			add = -40
-		# 		}
-		# 	}
-		# 		if = {
-		# 			limit = {
-		# 				OR = {
-		# 					has_attitude = {
-		# 						who = scope:terri_crisis_opposite
-		# 						attitude = antagonistic
-		# 					}
-		# 					has_attitude = {
-		# 						who = scope:terri_crisis_opposite
-		# 						attitude = domineering
-		# 					}
-		# 					has_attitude = {
-		# 						who = scope:terri_crisis_opposite
-		# 						attitude = belligerent
-		# 					}
-		# 					has_attitude = {
-		# 						who = scope:terri_crisis_opposite
-		# 						attitude = rebellious
-		# 					}
-		# 				}
-		# 			}
-		# 			add = -1000
-		# 		}
-		# 		else_if = {
-		# 			limit = {
-		# 				OR = {
-		# 					has_attitude = {
-		# 						who = scope:terri_crisis_opposite
-		# 						attitude = wary
-		# 					}
-		# 					has_attitude = {
-		# 						who = scope:terri_crisis_opposite
-		# 						attitude = disinterested
-		# 					}
-		# 				}
-		# 			}
-		# 			add = 50
-		# 		}
-		# 	if = {
-		# 		limit = {
-		# 			exists = power_bloc
-		# 			exists = scope:terri_crisis_opposite.power_bloc
-		# 		}
-		# 	}
+				}
+				add = 150
+			}
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_target
+								has_type = guarantee_independence
+							}
+						}
+						
+					}
+				}
+				add = -50
+			}
+			if = {
+				limit = {
+					any_country = {
+						NOT = {
+							this = scope:terri_crisis_target
+						}
+						country_rank = rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								binds = scope:terri_crisis_opposite
+								has_type = defensive_pact
+							}
+						}
+						
+					}
+				}
+				add = 80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:great_power
+					}
+				}
+				add = 100
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:major_power
+					}
+				}
+				add = 80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						OR = {
+							country_rank = rank_value:unrecognized_power
+							country_rank = rank_value:insignificant_power
+						}
+					}
+				}
+				add = 40
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						country_rank = rank_value:unrecognized_regional_power
+					}
+				}
+				add = 80
+			}
+			if = {
+				limit = {
+					any_country = {
+						this = scope:terri_crisis_opposite
+						OR = {
+							country_rank = rank_value:unrecognized_major_power
+							country_rank = rank_value:minor_power
+						}
+					}
+				}
+				add = 90
+			}
 		}
 		every_country = {
 			limit = {
@@ -1169,5 +1201,20 @@ ic_territory.15 = {
 				
 			}
 		}
+	}
+}
+ic_territory.100 = {
+	type = country_event
+	placement = root
+	title = ic_territory.100.t
+	desc = ic_territory.100.d
+	flavor = ic_territory.100.f
+	duration = 3
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	event_image = {
+		video = "europenorthamerica_capitalists_meeting"
+	}
+	option = {
+		
 	}
 }
